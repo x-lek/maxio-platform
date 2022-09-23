@@ -1,0 +1,16 @@
+server.host: "0.0.0.0"
+server.port: 5601
+server.publicBaseUrl: http://kibana:5601
+elasticsearch.hosts:
+  - http://elasticsearch:9200
+elasticsearch.username: "elastic"
+elasticsearch.password: "password"
+xpack.security.session.idleTimeout: "30m"
+xpack.security.session.cleanupInterval: "1d"
+xpack.security.authc.providers:
+  oidc.oidc1:
+    order: 0
+    realm: "oidc1"
+    description: "Log in with Keycloak"
+  basic.basic:
+    order: 1

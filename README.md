@@ -1,15 +1,29 @@
-# Initial Start
-docker-compose up -d
+## MAXIO-Platform
+Enter description ... <br/>
 
-# Add rp client_secret for keycloak
+-----
+## How to set up
+Main components includes Keycloak, Postgres (data for Keycloak), Elasticsearch, Kibana, MinIO and Data API
+
+
+
+1. Run all containers defined in docker-compose.yml
+```
+docker-compose up -d
+```
+
+2. Add rp client_secret of keycloak to elasticsearch
+```
 docker exec -it elasticsearch /bin/bash
 echo 'y' | echo '8cTRFK6QBBeacJZLgk41MypAC8SLAlJc' | bin/elasticsearch-keystore add xpack.security.authc.realms.oidc.oidc1.rp.client_secret
+````
 
-# login kibana using elastic user
+3. Login to Kibana using the default Elasticsearch users (Elastic)
 
-# add license through Kibana UI
+4. Add license through Kibana UI
 
-# create role using API or kibana
+5. Create role using API
+```
 curl --location --request POST 'elasticsearch:9200/_security/role/role1' \
 --header 'Authorization: Basic ZWxhc3RpYzpwYXNzd29yZA==' \
 --header 'Content-Type: application/json' \
@@ -45,8 +59,10 @@ curl --location --request POST 'elasticsearch:9200/_security/role/role1' \
     }
     
 }'
+```
 
-# create role mapping
+6. Create role mapping for group = kibana
+```
 curl --location --request POST 'elasticsearch:9200/_security/role_mapping/oidc-kibana' \
 --header 'Authorization: Basic ZWxhc3RpYzpwYXNzd29yZA==' \
 --header 'Content-Type: application/json' \
@@ -57,10 +73,12 @@ curl --location --request POST 'elasticsearch:9200/_security/role_mapping/oidc-k
     "field": { "groups" : "kibana" }
   }
 }'
+```
 
-# login using kcuser1
+7. Login Kibana using kcuser1 to verify that Role Mapping is working
 
-# make elastic keystore persistence, else need to run add keystore command everytime restart
+8. Make Elasticsearch keystore persistence to prevent running keystore command everytime containers restart
+```
 docker cp elasticsearch:/usr/share/elasticsearch/config ./volumes/elasticsearch-config
-
-# uncomment volume mount in docker-compose
+```
+9. Uncomment volume mount in docker-compose

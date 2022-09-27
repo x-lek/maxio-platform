@@ -1,0 +1,2 @@
+volumes/postgres-data/
+volumes/elasticsearch-data/nodes/

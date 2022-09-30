@@ -15,7 +15,7 @@ docker-compose up -d
 2. Add rp client_secret of keycloak to elasticsearch
 ```
 docker exec -it elasticsearch /bin/bash
-echo 'y' | echo '8cTRFK6QBBeacJZLgk41MypAC8SLAlJc' | bin/elasticsearch-keystore add xpack.security.authc.realms.oidc.oidc1.rp.client_secret
+echo 'y' | echo 'P1GiQeAJjJLPaEqnPVl5vQ9X1ULFjwE1' | bin/elasticsearch-keystore add xpack.security.authc.realms.oidc.oidc1.rp.client_secret
 ````
 
 3. Login to Kibana using the default Elasticsearch users (Elastic)

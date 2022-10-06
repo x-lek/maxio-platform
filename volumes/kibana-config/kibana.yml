@@ -3,7 +3,7 @@ server.port: 5601
 server.publicBaseUrl: http://kibana:5601
 elasticsearch.hosts:
   - http://elasticsearch:9200
-elasticsearch.username: "elastic"
+elasticsearch.username: "kibana_system"
 elasticsearch.password: "password"
 xpack.security.session.idleTimeout: "30m"
 xpack.security.session.cleanupInterval: "1d"

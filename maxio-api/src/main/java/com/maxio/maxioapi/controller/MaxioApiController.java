@@ -19,7 +19,7 @@ public class MaxioApiController {
         this.postRepository = postRepository;
     }
 
-    @RolesAllowed("kibana-user")
+    @RolesAllowed("team-a-role")
     @GetMapping("/post")
     public Iterable<Post> searchPost(@RequestParam String author, @RequestHeader(name="Authorization") String token) {
         log.info("Searching for author {}", author);

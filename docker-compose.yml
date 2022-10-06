@@ -21,7 +21,7 @@ services:
       - xpack.security.authc.realms.oidc.oidc1.op.issuer=http://keycloak:8080/auth/realms/elasticsearch
       - xpack.security.authc.realms.oidc.oidc1.op.authorization_endpoint=http://keycloak:8080/auth/realms/elasticsearch/protocol/openid-connect/auth
       - xpack.security.authc.realms.oidc.oidc1.op.token_endpoint=http://keycloak:8080/auth/realms/elasticsearch/protocol/openid-connect/token
-      - xpack.security.authc.realms.oidc.oidc1.op.jwkset_path=/usr/share/elasticsearch/data/jwkset.json
+      - xpack.security.authc.realms.oidc.oidc1.op.jwkset_path=/usr/share/elasticsearch/config/additional_config/jwkset.json
       - xpack.security.authc.realms.oidc.oidc1.op.userinfo_endpoint=http://keycloak:8080/auth/realms/elasticsearch/protocol/openid-connect/userinfo
       - xpack.security.authc.realms.oidc.oidc1.op.endsession_endpoint=http://keycloak:8080/auth/realms/elasticsearch/protocol/openid-connect/logout
       - xpack.security.authc.realms.oidc.oidc1.claims.principal=sub
@@ -45,7 +45,7 @@ services:
       - IPC_LOCK
     volumes:
       - ./volumes/elasticsearch-data:/usr/share/elasticsearch/data
-#      - ./volumes/elasticsearch-config/elasticsearch.keystore:/usr/share/elasticsearch/config/elasticsearch.keystore
+      - ./volumes/elasticsearch-config:/usr/share/elasticsearch/config/addition_config
     ports:
       - 9200:9200
   kibana:

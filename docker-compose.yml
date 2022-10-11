@@ -9,8 +9,9 @@ services:
       - xpack.security.enabled=true
       - xpack.security.http.ssl.enabled=false
       - ELASTIC_PASSWORD=password
-      - xpack.security.dls_fls.enabled=true
       - xpack.security.authc.token.enabled=true
+      - xpack.security.http.ssl.certificate_authorities=/usr/share/elasticsearch/data/server.crt.pem
+      - xpack.security.dls_fls.enabled=true
       - xpack.security.authc.realms.native.native1.order=1
       - xpack.security.authc.realms.oidc.oidc1.order=2
       - xpack.security.authc.realms.oidc.oidc1.rp.client_id=kibana
@@ -21,7 +22,7 @@ services:
       - xpack.security.authc.realms.oidc.oidc1.op.issuer=http://keycloak:8080/auth/realms/elasticsearch
       - xpack.security.authc.realms.oidc.oidc1.op.authorization_endpoint=http://keycloak:8080/auth/realms/elasticsearch/protocol/openid-connect/auth
       - xpack.security.authc.realms.oidc.oidc1.op.token_endpoint=http://keycloak:8080/auth/realms/elasticsearch/protocol/openid-connect/token
-      - xpack.security.authc.realms.oidc.oidc1.op.jwkset_path=/usr/share/elasticsearch/config/additional_config/jwkset.json
+      - xpack.security.authc.realms.oidc.oidc1.op.jwkset_path=/usr/share/elasticsearch/data/jwkset.json
       - xpack.security.authc.realms.oidc.oidc1.op.userinfo_endpoint=http://keycloak:8080/auth/realms/elasticsearch/protocol/openid-connect/userinfo
       - xpack.security.authc.realms.oidc.oidc1.op.endsession_endpoint=http://keycloak:8080/auth/realms/elasticsearch/protocol/openid-connect/logout
       - xpack.security.authc.realms.oidc.oidc1.claims.principal=sub
@@ -31,6 +32,7 @@ services:
       - xpack.security.authc.realms.jwt.jwt1.allowed_issuer="http://keycloak:8080/auth/realms/elasticsearch"
       - xpack.security.authc.realms.jwt.jwt1.allowed_audiences="account"
       - xpack.security.authc.realms.jwt.jwt1.allowed_signature_algorithms=[RS256,HS256]
+#      - xpack.security.authc.realms.jwt.jwt1.pkc_jwkset_path=https://keycloak:8443/auth/realms/elasticsearch/protocol/openid-connect/certs
       - xpack.security.authc.realms.jwt.jwt1.pkc_jwkset_path=/usr/share/elasticsearch/data/jwkset.json
       - xpack.security.authc.realms.jwt.jwt1.claims.principal=sub
       - xpack.security.authc.realms.jwt.jwt1.claims.groups=groups
@@ -70,10 +72,15 @@ services:
       - DB_PASSWORD=password
       - KEYCLOAK_USER=admin
       - KEYCLOAK_PASSWORD=password
+#      - KC_HTTPS_CERTIFICATE_FILE=/opt/jboss/keycloak/imports/server.crt.pem
+#      - KC_HTTPS_CERTIFICATE_KEY=/opt/jboss/keycloak/imports/server.key.pem
     command: 
-      - "-b 0.0.0.0"
+      - "-b 0.0.0.0 -Dkeycloak.import=/opt/jboss/keycloak/imports/realm-export.json"
+    volumes:
+      - ./volumes/keycloak-config:/opt/jboss/keycloak/imports
     ports:
       - 8080:8080
+      - 8443:8443
     depends_on:
       - postgres
   postgres:
@@ -94,3 +101,24 @@ services:
       timeout: 5s
       retries: 5
       start_period: 30s
+
+  minio:
+    container_name: minio
+    image: minio/minio:latest
+    pull_policy: always
+    volumes:
+      - ./volumes/minio-data:/data
+    ports:
+      - 9000:9000
+      - 9001:9001
+    environment:
+#      MINIO_ETCD_ENDPOINTS: http://etcd:2379
+      - MINIO_ROOT_USER=admin
+      - MINIO_ROOT_PASSWORD=password
+      - MINIO_IDENTITY_OPENID_CONFIG_URL=http://keycloak:8080/auth/realms/elasticsearch/.well-known/openid-configuration
+      - MINIO_IDENTITY_OPENID_CLIENT_ID=minio
+      - MINIO_IDENTITY_OPENID_CLIENT_SECRET=aTdoRUjGK2Cjlum7Lpa0x3W5AYmKxXBa
+      - MINIO_IDENTITY_OPENID_SCOPES=openid
+      - MINIO_IDENTITY_OPENID_CLAIM_NAME=groups
+    command: "server /data --address minio:9000 --console-address minio:9001"
+#    command: "gateway nas /data --address minio:9000 --console-address minio:9001"

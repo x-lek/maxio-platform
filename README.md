@@ -5,7 +5,16 @@ Enter description ... <br/>
 ## How to set up
 Main components includes Keycloak, Postgres (data for Keycloak), Elasticsearch, Kibana, MinIO and Data API
 
+elasticsearch
+- load sample web log data
+- kcuser1 assume monitoring security tag (example)
 
+
+maxio-api
+- authenticate users
+- forward access token to elasticsearch resource server
+
+openssl req -x509 -newkey rsa:4096 -nodes -keyout key.pem -out cert.pem -sha256 -days 3650
 
 1. Run all containers defined in docker-compose.yml
 ```
@@ -16,12 +25,12 @@ docker-compose up -d
 ```
 docker exec -it elasticsearch /bin/bash
 
-bin/elasticsearch-keystore add pack.security.authc.realms.oidc.oidc1.rp.client_secret
-ih4Q1fVuWz8PQgQCWlfuzCUzlVjyC8AL
+bin/elasticsearch-keystore add xpack.security.authc.realms.oidc.oidc1.rp.client_secret
+dbzl8H15BlS3Dr4Dzg162bmHCCu3s8kz
 
-
+# not needed for jwt since configuration is authentication = none
 bin/elasticsearch-keystore add xpack.security.authc.realms.jwt.jwt1.client_authentication.shared_secret
-ih4Q1fVuWz8PQgQCWlfuzCUzlVjyC8AL
+dbzl8H15BlS3Dr4Dzg162bmHCCu3s8kz
 
 ````
 
@@ -89,3 +98,10 @@ curl --location --request POST 'elasticsearch:9200/_security/role_mapping/oidc-k
 docker cp elasticsearch:/usr/share/elasticsearch/config ./volumes/elasticsearch-config
 ```
 9. Uncomment volume mount in docker-compose
+
+
+For minio
+- add policy file for kcuser1 user readonly mode
+```
+mc admin policy add local kcuser1-readonly minio-policy.json
+```

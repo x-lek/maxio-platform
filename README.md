@@ -100,8 +100,8 @@ docker cp elasticsearch:/usr/share/elasticsearch/config ./volumes/elasticsearch-
 9. Uncomment volume mount in docker-compose
 
 
-For minio
+For minio, assuming local points to minio server
 - add policy file for kcuser1 user readonly mode
 ```
-mc admin policy add local kcuser1-readonly minio-policy.json
+mc admin policy add local minio-user-bucket minio-policy.json
 ```

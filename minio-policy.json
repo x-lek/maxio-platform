@@ -13,7 +13,7 @@
         ]
       },
       "Resource": [
-        "arn:aws:s3:::kcuser1/*"
+        "arn:aws:s3:::${jwt:preferred_username}/*"
       ],
       "Sid": ""
     }

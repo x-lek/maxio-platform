@@ -1,34 +1,27 @@
 package com.maxio.maxioapi.controller;
 
-import com.maxio.maxioapi.entity.Post;
-import com.maxio.maxioapi.repository.PostRepository;
+import com.maxio.maxioapi.entity.Log;
+import com.maxio.maxioapi.service.MaxioApiService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.security.RolesAllowed;
+import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class MaxioApiController {
-    private final PostRepository postRepository;
+    private final MaxioApiService maxioApiService;
 
-    public MaxioApiController(PostRepository postRepository) {
-        this.postRepository = postRepository;
+    @GetMapping("/log")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Log> searchLog(
+            @RequestBody String query,
+            @RequestHeader(name="Authorization") String token) throws IOException {
+        return maxioApiService.search(query, token);
     }
 
-    //@RolesAllowed("kibana-user")
-    //, @RequestHeader(name="Authorization") String token
-    @GetMapping("/post")
-    public Iterable<Post> searchPost(@RequestParam String author) {
-        log.info("Searching for author {}", author);
-        //log.info(token);
-        return postRepository.findByAuthor(author);
-    }
-
-//
-//
-//    @GetMapping("/raw")
 }

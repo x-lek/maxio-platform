@@ -17,7 +17,7 @@ services:
       - xpack.security.authc.realms.oidc.oidc1.rp.client_id=kibana
       - xpack.security.authc.realms.oidc.oidc1.rp.response_type=code
       - xpack.security.authc.realms.oidc.oidc1.rp.redirect_uri=http://kibana:5601/api/security/oidc/callback
-      - xpack.security.authc.realms.oidc.oidc1.rp.post_logout_redirect_uri=https://kibana:5601/login?msg=LOGGED_OUT
+      - xpack.security.authc.realms.oidc.oidc1.rp.post_logout_redirect_uri=http://kibana:5601/login?msg=LOGGED_OUT
       - xpack.security.authc.realms.oidc.oidc1.rp.requested_scopes=openid
       - xpack.security.authc.realms.oidc.oidc1.op.issuer=http://keycloak:8080/auth/realms/elasticsearch
       - xpack.security.authc.realms.oidc.oidc1.op.authorization_endpoint=http://keycloak:8080/auth/realms/elasticsearch/protocol/openid-connect/auth

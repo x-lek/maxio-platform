@@ -1,36 +1,37 @@
 package com.maxio.maxioapi.entity;
 
-//import lombok.AllArgsConstructor;
-//import lombok.Builder;
-//import lombok.Data;
-//import org.springframework.data.annotation.Id;
-//import org.springframework.data.elasticsearch.annotations.DateFormat;
-//import org.springframework.data.elasticsearch.annotations.Document;
-//import org.springframework.data.elasticsearch.annotations.Field;
-//import org.springframework.data.elasticsearch.annotations.FieldType;
-//
-//import java.util.Date;
-//import java.util.List;
-//
-//@Builder
-//@Data
-//@AllArgsConstructor
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+
+import java.util.Date;
+import java.util.List;
+
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 //@Document(indexName = "post")
-//public class Post {
-//
-//    @Id
-//    Long id;
-//    String threadId;
-//    String threadTitle;
-//    int localPostId;
-//
-//    @Field(type = FieldType.Date, format = DateFormat.basic_date_time)
-//    Date publishedDate;
-//    String publishedDateString;
-//    String author;
-//    Long authorPostCount;
-//    String html;
-//    String text;
-//    List<Image> images;
-//    List<Quote> quotes;
-//}
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class Post {
+
+    @Id
+    Long id;
+    String threadId;
+    String threadTitle;
+    int localPostId;
+
+    @JsonFormat(pattern="yyyyMMdd'T'HHmmss.SSS")
+    Date publishedDate;
+    String publishedDateString;
+    String author;
+    Long authorPostCount;
+    String html;
+    String text;
+    List<Image> images;
+    List<Quote> quotes;
+}

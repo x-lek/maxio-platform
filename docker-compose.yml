@@ -47,7 +47,7 @@ services:
       - IPC_LOCK
     volumes:
       - ./volumes/elasticsearch-data:/usr/share/elasticsearch/data
-      - ./volumes/elasticsearch-config:/usr/share/elasticsearch/config/addition_config
+#      - ./volumes/elasticsearch-config:/usr/share/elasticsearch/config/addition_config
     ports:
       - 9200:9200
   kibana:

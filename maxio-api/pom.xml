@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
-	<groupId>com.maxio</groupId>
+	<groupId>xlek.maxio-platform</groupId>
 	<artifactId>maxio-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>maxio-api</name>
@@ -97,6 +97,31 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.2.1</version>
+				<configuration>
+					<from>
+						<image>arm64v8/amazoncorretto:17</image>
+					</from>
+					<to>
+						<image>registry.gitlab.com/xlek/sidechat/${artifactId}:${version}</image>
+					</to>
+					<container>
+						<creationTime>USE_CURRENT_TIMESTAMP</creationTime>
+					</container>
+					<allowInsecureRegistries>true</allowInsecureRegistries>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
